@@ -6,7 +6,6 @@ resource "oci_core_vcn" "vcn" {
 resource "oci_core_internet_gateway" "gateway" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.vcn.id
-  enabled        = var.vcn_gateway_enabled
 }
 
 resource "oci_core_subnet" "subnet" {
