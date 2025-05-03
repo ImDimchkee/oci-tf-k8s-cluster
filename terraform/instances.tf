@@ -17,18 +17,45 @@ resource "oci_core_instance" "worker" {
   display_name = "k8-worker-${count.index + 1}"
   source_details {
     source_type             = "image"
-    source_id               = "ocid1.image.oc1.uk-london-1.aaaaaaaaffyd5ugacgskn5vyd4vn7tjkahvb5wmcyxzzhobfw3egnrmhqqaq"
+    source_id               = var.source_id
     boot_volume_size_in_gbs = "50"
 
   }
 
   create_vnic_details {
     subnet_id = oci_core_subnet.subnet.id
+    nsg_ids   = [oci_core_network_security_group.default_sg.id]
   }
 
   metadata = {
-    "ssh_authorizerd_keys" = local.ssh_authorized_keys
+    "ssh_authorized_keys" = local.ssh_authorized_keys
   }
 
 }
 
+resource "oci_core_instance" "master" {
+  availability_domain = var.availability_domain
+  compartment_id      = var.compartment_id
+
+  shape = var.insatnce_shape
+  shape_config {
+    ocpus         = 2
+    memory_in_gbs = 8
+  }
+
+  display_name = "k8-master-1"
+  source_details {
+    source_type = "image"
+    source_id   = var.source_id
+  }
+
+  create_vnic_details {
+    subnet_id = oci_core_subnet.subnet.id
+    nsg_ids   = [oci_core_network_security_group.default_sg.id]
+  }
+
+  metadata = {
+    "ssh_authorized_keys" = local.ssh_authorized_keys
+  }
+
+}

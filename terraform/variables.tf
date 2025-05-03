@@ -20,7 +20,7 @@ variable "user_ocid" {
 
 variable "private_key_path" {
   description = "Path to the OCI APIKey .pem key"
-  type = string
+  type        = string
 }
 
 variable "fingerprint" {
@@ -35,6 +35,11 @@ variable "worker_count" {
 
 variable "insatnce_shape" {
   description = "Instance shape"
+  type        = string
+}
+
+variable "source_id" {
+  description = "value"
   type        = string
 }
 
@@ -56,4 +61,9 @@ variable "lb_shape" {
 variable "lb_displayname" {
   description = "Load balancer display name"
   type        = string
+}
+
+variable "ip_map" {
+  description = "value"
+  type        = map(string)
 }
