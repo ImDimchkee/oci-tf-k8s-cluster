@@ -1,15 +1,15 @@
 ---
-- name: Download the Kubernetes GPG key
-  get_url:
-    url: "https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
-    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    mode: '0644'
-
 - name: Download and save Kubernetes GPG key
   shell: |
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   args:
     creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+- name: Add k8s repository to sources.list
+  shell: |
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  args:
+    creates: /etc/apt/sources.list.d/kubernetes.list
 
 - name: Update apt package index
   apt:
@@ -38,5 +38,5 @@
     name: kubectl
     selection: hold
 
-# - name: Hold Kubernetes packages
-#   command: apt-mark hold kubelet kubeadm kubectl
+- name: Hold Kubernetes packages
+  command: apt-mark hold kubelet kubeadm kubectl

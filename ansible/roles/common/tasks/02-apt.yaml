@@ -12,3 +12,7 @@
       - curl
     state: present
     update_cache: yes
+
+- name: apt upgrade
+  apt:
+    upgrade: full
