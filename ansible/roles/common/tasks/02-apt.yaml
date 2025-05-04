@@ -1,0 +1,14 @@
+---
+- name: Replace hosts's /etc/apt/sources.list with ours
+  copy:
+    src: files/sources.list
+    dest: /etc/apt/sources.list
+
+- name: Install dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes

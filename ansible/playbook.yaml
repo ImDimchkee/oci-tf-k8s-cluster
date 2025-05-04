@@ -1,0 +1,8 @@
+---
+- name: Deploy kubernetes components
+  hosts: all
+
+  roles:
+    - common
+
+#- name:

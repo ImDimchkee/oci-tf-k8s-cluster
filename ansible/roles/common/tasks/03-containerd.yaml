@@ -1,0 +1,37 @@
+---
+- name: Download containerd tarball
+  get_url:
+    url: "https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-{{ containerd_os }}-{{ containerd_arch }}.tar.gz"
+    dest: "/tmp/containerd-{{ containerd_version }}.tar.gz"
+    mode: '0644'
+
+- name: Extract containerd archive
+  unarchive:
+    src: "/tmp/containerd-{{ containerd_version }}.tar.gz"
+    dest: /usr/local
+    remote_src: yes
+
+- name: Create containerd systemd service
+  shell: |
+    curl -fsSL https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -o /etc/systemd/system/containerd.service
+  args:
+    creates: /etc/systemd/system/containerd.service
+
+- name: Reload systemd and start containerd
+  systemd:
+    name: containerd
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Install containerd default config
+  shell: |
+    mkdir -p /etc/containerd
+    containerd config default > /etc/containerd/config.toml
+  args:
+    creates: /etc/containerd/config.toml
+
+- name: Restart containerd with config
+  systemd:
+    name: containerd
+    state: restarted
