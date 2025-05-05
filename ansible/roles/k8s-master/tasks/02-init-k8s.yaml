@@ -5,5 +5,5 @@
     dest: /tmp/master.yaml
     mode: '0644'
 
-- name: kubeadm init
-  ansible.builtin.shell: kubeadm init --config /tmp/master.yaml
+# - name: kubeadm init
+#   ansible.builtin.shell: kubeadm init --config /tmp/master.yaml

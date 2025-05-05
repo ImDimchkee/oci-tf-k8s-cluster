@@ -5,4 +5,14 @@
   roles:
     - common
 
-#- name:
+- name: Deploy k8s master node
+  hosts: master
+
+  roles:
+    - k8s-master
+
+- name: Deploy k8s nodes
+  hosts: workers
+
+  roles:
+    - k8s-node
