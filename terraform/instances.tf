@@ -22,7 +22,7 @@ resource "oci_core_instance" "worker" {
   }
 
   create_vnic_details {
-    subnet_id  = oci_core_subnet.subnet.id
+    subnet_id = oci_core_subnet.subnet.id
     nsg_ids    = [oci_core_network_security_group.default_sg.id]
     private_ip = "10.0.1.10${count.index}"
   }
@@ -52,7 +52,7 @@ resource "oci_core_instance" "master" {
   }
 
   create_vnic_details {
-    subnet_id  = oci_core_subnet.subnet.id
+    subnet_id = oci_core_subnet.subnet.id
     nsg_ids    = [oci_core_network_security_group.default_sg.id]
     private_ip = "10.0.1.10"
   }
