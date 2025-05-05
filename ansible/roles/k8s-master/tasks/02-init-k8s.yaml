@@ -1,9 +1,0 @@
----
-- name: Copy InitCluster manifest to the k8s master
-  ansible.builtin.copy:
-    src: ./files/master.yaml
-    dest: /tmp/master.yaml
-    mode: '0644'
-
-# - name: kubeadm init
-#   ansible.builtin.shell: kubeadm init --config /tmp/master.yaml

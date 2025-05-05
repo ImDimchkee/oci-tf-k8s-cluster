@@ -58,6 +58,11 @@
     dest: /etc/containerd.toml
     mode: 0644
 
+- name: Enable sysctl up_forward
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+
 - name: Restart containerd with config
   ansible.builtin.systemd:
     name: containerd

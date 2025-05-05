@@ -1,3 +1,2 @@
 ---
-- import_tasks: "01-ip-forward.yaml"
-- import_tasks: "02-init-k8s.yaml"
+- import_tasks: "01-k8s-init.yaml"

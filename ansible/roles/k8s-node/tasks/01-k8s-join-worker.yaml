@@ -1,0 +1,4 @@
+---
+- name: kubeadm init
+  ansible.builtin.shell: "{{ hostvars[groups['master'][0]].kubeadm_join_cmd }}"
+  when: hostvars[groups['master'][0]].kubeadm_join_cmd is defined

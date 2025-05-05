@@ -1,0 +1,31 @@
+---
+- name: Copy InitCluster manifest to the k8s master
+  ansible.builtin.copy:
+    src: ./files/master.yaml
+    dest: /tmp/master.yaml
+    mode: '0644'
+
+- name: kubeadm init
+  ansible.builtin.shell: kubeadm init --config /tmp/master.yaml
+
+- name: Create /root/.kube directory
+  ansible.builtin.file:
+    state: directory
+    path: /root/.kube
+
+- name: Create symlink for 
+  ansible.builtin.file:
+    state: link
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/admin.conf
+
+- name: kubeadm join command for workers
+  ansible.builtin.shell: kubeadm token create --print-join-command
+  register: kubeadm_join_command
+
+- name: Save kubeadm join command
+  ansible.builtin.set_fact:
+    kubeadm_join_cmd: "{{ kubeadm_join_command.stdout }}"
+
+- name: Install Calio
+  ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
