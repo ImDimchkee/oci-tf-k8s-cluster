@@ -1,18 +1,19 @@
 ---
 - name: Replace hosts's /etc/apt/sources.list with ours
-  copy:
+  ansible.builtin.copy:
     src: files/sources.list
     dest: /etc/apt/sources.list
 
 - name: Install dependencies
-  apt:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
       - curl
+      - net-tools
     state: present
     update_cache: yes
 
 - name: apt upgrade
-  apt:
+  ansible.builtin.apt:
     upgrade: full

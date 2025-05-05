@@ -1,0 +1,3 @@
+---
+- name: Enable sysctl up_forward
+  ansible.builtin.shell: sysctl net.ipv4.ip_forward=1
