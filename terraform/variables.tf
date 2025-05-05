@@ -35,7 +35,7 @@ variable "worker_count" {
 
 variable "master_count" {
   description = "Number of k8s masters"
-  type = number
+  type        = number
 }
 
 variable "insatnce_shape" {

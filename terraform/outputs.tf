@@ -24,7 +24,7 @@ resource "local_file" "cluster_ips" {
   ${m.public_ip}
   %{endfor}
   DOC
-  filename   = "../ansible/group_vars.yaml"
+  filename   = "../ansible/inventory"
   depends_on = [oci_core_instance.worker, oci_core_instance.master]
 }
 
