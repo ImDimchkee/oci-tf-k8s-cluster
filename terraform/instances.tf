@@ -19,12 +19,12 @@ resource "oci_core_instance" "worker" {
     source_type             = "image"
     source_id               = var.source_id
     boot_volume_size_in_gbs = "50"
-
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.subnet.id
-    nsg_ids   = [oci_core_network_security_group.default_sg.id]
+    subnet_id  = oci_core_subnet.subnet.id
+    nsg_ids    = [oci_core_network_security_group.default_sg.id]
+    private_ip = "10.0.1.10${count.index}"
   }
 
   metadata = {
@@ -36,6 +36,8 @@ resource "oci_core_instance" "worker" {
 resource "oci_core_instance" "master" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
+
+  count = var.master_count
 
   shape = var.insatnce_shape
   shape_config {
@@ -50,8 +52,9 @@ resource "oci_core_instance" "master" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.subnet.id
-    nsg_ids   = [oci_core_network_security_group.default_sg.id]
+    subnet_id  = oci_core_subnet.subnet.id
+    nsg_ids    = [oci_core_network_security_group.default_sg.id]
+    private_ip = "10.0.1.10"
   }
 
   metadata = {

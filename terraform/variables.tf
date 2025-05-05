@@ -33,6 +33,11 @@ variable "worker_count" {
   type        = number
 }
 
+variable "master_count" {
+  description = "Number of k8s masters"
+  type = number
+}
+
 variable "insatnce_shape" {
   description = "Instance shape"
   type        = string
@@ -65,5 +70,10 @@ variable "lb_displayname" {
 
 variable "ip_map" {
   description = "value"
-  type        = map(string)
+  type = object({
+    home_ip = string
+    worker1 = string
+    worker2 = string
+    master  = string
+  })
 }
