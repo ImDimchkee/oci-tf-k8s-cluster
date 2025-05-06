@@ -1,0 +1,42 @@
+---
+- name: Download and save Kubernetes GPG key
+  ansible.builtin.shell: |
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+- name: Add k8s repository to sources.list
+  ansible.builtin.shell: |
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  args:
+    creates: /etc/apt/sources.list.d/kubernetes.list
+
+- name: Update apt package index
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install kubelet, kubeadm, and kubectl
+  ansible.builtin.apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+
+- name: Hold
+  ansible.builtin.dpkg_selections:
+    name: kubeadm
+    selection: hold
+    
+- name: Hold
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold
+
+- name: Hold
+  ansible.builtin.dpkg_selections:
+    name: kubectl
+    selection: hold
+
+- name: Hold Kubernetes packages
+  ansible.builtin.command: apt-mark hold kubelet kubeadm kubectl
