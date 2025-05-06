@@ -1,0 +1,17 @@
+---
+- name: Backup current iptables rules
+  shell: sudo iptables-save | grep -vE "DROP|REJECT" | iptables-restore
+  changed_when: false
+
+- name: Check iptables rules
+  shell: sudo iptables -L
+  changed_when: false
+
+- name: Save iptables rules
+  shell: sudo netfilter-persistent save
+  changed_when: false
+
+- name: Restart iptables service
+  service:
+    name: iptables
+    state: restarted

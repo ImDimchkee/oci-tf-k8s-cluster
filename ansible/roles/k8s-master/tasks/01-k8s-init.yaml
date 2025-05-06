@@ -17,7 +17,7 @@
   ansible.builtin.file:
     state: link
     src: /etc/kubernetes/admin.conf
-    dest: /root/.kube/admin.conf
+    dest: /root/.kube/config
 
 - name: kubeadm join command for workers
   ansible.builtin.shell: kubeadm token create --print-join-command
@@ -27,5 +27,5 @@
   ansible.builtin.set_fact:
     kubeadm_join_cmd: "{{ kubeadm_join_command.stdout }}"
 
-- name: Install Calio
+- name: Install Calico
   ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml

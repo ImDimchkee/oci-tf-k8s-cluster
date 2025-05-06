@@ -101,3 +101,5 @@ ansible.log
 
 # Windows
 Thumbs.db
+
+ansible/inventory
