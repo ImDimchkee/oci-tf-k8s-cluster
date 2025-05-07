@@ -1,0 +1,9 @@
+---
+- name: Populate /etc/hosts file on all hosts
+  ansible.builtin.template:
+    src: templates/hosts.j2
+    dest: /etc/hosts
+    mode: 0644
+
+- name: Reboot the system to update kernel
+  ansible.builtin.reboot:

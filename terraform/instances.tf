@@ -1,7 +1,8 @@
 locals {
-  ssh_authorized_keys = file("~/.ssh/id_ed25519.pub")
+  ssh_authorized_keys = file(var.path_to_ssh_pub_key)
 }
 
+# Deploy worker insatnces
 resource "oci_core_instance" "worker" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
@@ -22,7 +23,7 @@ resource "oci_core_instance" "worker" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.subnet.id
+    subnet_id  = oci_core_subnet.subnet.id
     nsg_ids    = [oci_core_network_security_group.default_sg.id]
     private_ip = "10.0.1.10${count.index}"
   }
@@ -33,6 +34,7 @@ resource "oci_core_instance" "worker" {
 
 }
 
+# Deploy master instance
 resource "oci_core_instance" "master" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
@@ -52,7 +54,7 @@ resource "oci_core_instance" "master" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.subnet.id
+    subnet_id  = oci_core_subnet.subnet.id
     nsg_ids    = [oci_core_network_security_group.default_sg.id]
     private_ip = "10.0.1.10"
   }

@@ -23,20 +23,20 @@
       - kubectl
     state: present
 
-- name: Hold
+- name: Hold kubeadm package from upgrading
   ansible.builtin.dpkg_selections:
     name: kubeadm
     selection: hold
     
-- name: Hold
+- name: Hold kubelet package from upgrading
   ansible.builtin.dpkg_selections:
     name: kubelet
     selection: hold
 
-- name: Hold
+- name: Hold kubectl package from upgrading
   ansible.builtin.dpkg_selections:
     name: kubectl
     selection: hold
 
-- name: Hold Kubernetes packages
+- name: Hold Kubernetes packages 
   ansible.builtin.command: apt-mark hold kubelet kubeadm kubectl

@@ -1,13 +1,16 @@
+# Default VCN
 resource "oci_core_vcn" "vcn" {
   compartment_id = var.compartment_id
   cidr_blocks    = var.vcn_cidr
 }
 
+# Internet gateway for VCN EGRESS
 resource "oci_core_internet_gateway" "gateway" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.vcn.id
 }
 
+# Route table
 resource "oci_core_route_table" "rt-default" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.vcn.id
@@ -18,6 +21,7 @@ resource "oci_core_route_table" "rt-default" {
   }
 }
 
+# K8s Subnet
 resource "oci_core_subnet" "subnet" {
   display_name        = "k8s-network"
   cidr_block          = var.subnet_cidr
@@ -27,6 +31,7 @@ resource "oci_core_subnet" "subnet" {
   availability_domain = var.availability_domain
 }
 
+# Not used yet
 # resource "oci_load_balancer" "loadbalancer" {
 #   compartment_id = var.compartment_id
 #   display_name   = var.lb_displayname

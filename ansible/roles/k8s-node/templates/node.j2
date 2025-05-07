@@ -3,16 +3,18 @@ apiVersion: kubeadm.k8s.io/v1beta4
 caCertPath: /etc/kubernetes/pki/ca.crt
 discovery:
   bootstrapToken:
-    apiServerEndpoint: kube-apiserver:6443
-    token: abcdef.0123456789abcdef
+    apiServerEndpoint: {{ hostvars[groups['master'][0]].private_ip }}:6443
+    token: {{ hostvars[groups['master'][0]].kubeadm_join_cmd }}
+    caCertHashes: 
+      - "sha256:{{ hostvars[groups['master'][0]].kubeadm_join_crt_hash }}"
     unsafeSkipCAVerification: true
-  tlsBootstrapToken: abcdef.0123456789abcdef
+  tlsBootstrapToken: {{ hostvars[groups['master'][0]].kubeadm_join_cmd }}
 kind: JoinConfiguration
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
   imagePullSerial: true
-  name: k8-master-1
+  name: {{ inventory_hostname }}
   taints: null
 timeouts:
   controlPlaneComponentHealthCheck: 4m0s

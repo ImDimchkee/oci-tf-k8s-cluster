@@ -1,11 +1,14 @@
 ---
-- name: Copy InitConfiguration manifest
-  ansible.builtin.copy:
-    src: files/node.yaml
+# - name: Copy InitConfiguration manifest
+#   ansible.builtin.copy:
+#     src: files/node.yaml
+#     dest: /tmp/node.yaml
+
+- name: Template InitConfiguration manifest and move to the node
+  ansible.builtin.template:
+    src: templates/node.j2
     dest: /tmp/node.yaml
-
-
-
-- name: kubeadm init
-  ansible.builtin.shell: "{{ hostvars[groups['master'][0]].kubeadm_join_cmd }}"
   when: hostvars[groups['master'][0]].kubeadm_join_cmd is defined
+
+- name: Joing K8s cluster nodes
+  ansible.builtin.shell: "kubeadm join --config /tmp/node.yaml"

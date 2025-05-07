@@ -2,5 +2,6 @@
 - import_tasks: "01-swap.yaml"
 - import_tasks: "02-apt.yaml"
 - import_tasks: "03-containerd.yaml"
-- import_tasks: "04-tools.yaml"
+- import_tasks: "04-k8s-toolbox.yaml"
 - import_tasks: "05-firewall.yaml"
+- import_tasks: "06-populate-hosts.yaml"

@@ -1,5 +1,6 @@
+# Global
 variable "region" {
-  description = "Default region"
+  description = "Default region for all resources"
   type        = string
 }
 
@@ -13,8 +14,9 @@ variable "compartment_id" {
   type        = string
 }
 
+# Provider Auth
 variable "user_ocid" {
-  description = "User Oracle Cloud ID"
+  description = "User Oracle Cloud ID for authentication"
   type        = string
 }
 
@@ -28,6 +30,7 @@ variable "fingerprint" {
   type        = string
 }
 
+# Compute instances
 variable "worker_count" {
   description = "Set number values to deploy that number of workers"
   type        = number
@@ -43,11 +46,13 @@ variable "insatnce_shape" {
   type        = string
 }
 
+# Image OCID
 variable "source_id" {
   description = "value"
   type        = string
 }
 
+# Networking
 variable "vcn_cidr" {
   description = "value"
   type        = list(string)
@@ -58,6 +63,7 @@ variable "subnet_cidr" {
   type        = string
 }
 
+# Not used yet
 variable "lb_shape" {
   description = "Load balancer shape"
   type        = string
@@ -68,6 +74,7 @@ variable "lb_displayname" {
   type        = string
 }
 
+# IP Whitelist
 variable "ip_map" {
   description = "value"
   type = object({
@@ -76,4 +83,10 @@ variable "ip_map" {
     worker2 = string
     master  = string
   })
+}
+
+# SSH Public key for direct instance access
+variable "path_to_ssh_pub_key" {
+  description = "Absolute path of public key file to add to the servers"
+  type        = string
 }
